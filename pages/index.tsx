@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
+import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import HeaderTitle from "../components/HeaderTitle";
+import MovieItem from "../components/MovieItem";
 import Seo from "../components/Seo";
 import { IMovieResult } from "../types/movie.type";
 import { IMAGE_URL } from "../types/utils";
@@ -34,6 +34,8 @@ const Home: NextPage = () => {
 
   const loading = popularLoading || upcomingLoading || nowPlayingLoading;
 
+  const router = useRouter();
+
   return (
     <div>
       <Seo title={"Movie"} />
@@ -46,10 +48,7 @@ const Home: NextPage = () => {
             <h2>Popular</h2>
             <div className="MovieContainer">
               {popularData?.results.map((movie) => (
-                <div key={movie.id} className="Movie">
-                  <img src={IMAGE_URL(movie.poster_path)} />
-                  <h4>{movie.title}</h4>
-                </div>
+                <MovieItem key={movie.id} {...movie} />
               ))}
             </div>
           </div>
@@ -57,10 +56,7 @@ const Home: NextPage = () => {
             <h2>Upcoming</h2>
             <div className="MovieContainer">
               {upcomingData?.results.map((movie) => (
-                <div key={movie.id} className="Movie">
-                  <img src={IMAGE_URL(movie.poster_path)} />
-                  <h4>{movie.title}</h4>
-                </div>
+                <MovieItem key={movie.id} {...movie} />
               ))}
             </div>
           </div>
@@ -68,10 +64,7 @@ const Home: NextPage = () => {
             <h2>Now Playing</h2>
             <div className="MovieContainer">
               {nowPlayingData?.results.map((movie) => (
-                <div key={movie.id} className="Movie">
-                  <img src={IMAGE_URL(movie.poster_path)} />
-                  <h4>{movie.title}</h4>
-                </div>
+                <MovieItem key={movie.id} {...movie} />
               ))}
             </div>
           </div>
@@ -96,28 +89,6 @@ const Home: NextPage = () => {
             grid-template-columns: repeat(auto-fill, 180px);
             gap: 8px;
             margin: 0px auto;
-          }
-          .Movie {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-          }
-          img {
-            width: 150px;
-            height: 185px;
-            border-radius: 5px;
-            transition: transform 0.2s ease-in-out;
-            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-          }
-          .Movie:hover img {
-            transform: scale(1.05) translateY(-10px);
-          }
-          h4 {
-            font-size: 12px;
-            text-align: center;
-            margin-top: 5px;
           }
         `}
       </style>
